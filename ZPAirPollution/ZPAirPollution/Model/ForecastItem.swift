@@ -43,12 +43,13 @@ enum AirQualityLevel: Int, CustomStringConvertible, Decodable {
 
 protocol ForecastItemModel {
     var airQualityIndex: AirQualityLevel { get }
-    var date: Date { get }
+    var unixDate: Double { get }
     var components: ForecastItemDetailModel { get }
 }
 extension ForecastItemModel {
     var formattedDate: String {
         let dateFormatter = DateFormatter()
+        let date = Date(timeIntervalSince1970: unixDate)
         dateFormatter.dateStyle = DateFormatter.Style.short
         dateFormatter.timeZone = TimeZone(identifier: "UTC")
         let dateAsFormattedString = dateFormatter.string(from: date)
@@ -58,6 +59,7 @@ extension ForecastItemModel {
     
     var hourComponent: String {
         let formatter = DateFormatter()
+        let date = Date(timeIntervalSince1970: unixDate)
         formatter.timeZone = TimeZone(identifier: "UTC")
         formatter.dateFormat = "hh a"
         let hourString = formatter.string(from: date)
@@ -67,7 +69,7 @@ extension ForecastItemModel {
 
 struct ForecastItem : ForecastItemModel {
     let airQualityIndex: AirQualityLevel
-    let date: Date
+    let unixDate: Double
     let components: ForecastItemDetailModel
 }
 
@@ -86,8 +88,9 @@ extension ForecastItem : Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let mainContainer = try container.nestedContainer(keyedBy: CodingKeys.AirQualityCodingKeys.self, forKey: .main)
         airQualityIndex = try mainContainer.decode(AirQualityLevel.self, forKey: .aqi)
-        let unixDate = try container.decode(Double.self, forKey: .unixDate)
-        date = Date(timeIntervalSince1970: unixDate)
+        //let unixDate = try container.decode(Double.self, forKey: .unixDate)
+        unixDate = try container.decode(Double.self, forKey: .unixDate)
+        //date = Date(timeIntervalSince1970: unixDate)
         components = try container.decode(ForecastItemDetail.self, forKey: .components)
     }
 }

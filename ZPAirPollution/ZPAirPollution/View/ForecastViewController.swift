@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol TapIteractionDelegate : AnyObject {
+    func currentViewTapped()
+}
+
 class CurrentForecastView : UIView {
+    weak var interactionDelegate: TapIteractionDelegate?
+
     let airQualityLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -47,6 +53,12 @@ class CurrentForecastView : UIView {
             dateLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             dateLabel.topAnchor.constraint(equalTo: airQualityValueLabel.bottomAnchor, constant: 15)
         ])
+        
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapCurrentView(_:))))
+    }
+    
+    @objc func tapCurrentView(_ tapGesture: UITapGestureRecognizer) {
+        interactionDelegate?.currentViewTapped()
     }
     
     func setValues(_ airQuality: String, _ date: String, _ color: UIColor) {
@@ -76,6 +88,7 @@ class ForecastViewController : UIViewController {
     lazy var currentForecastView: CurrentForecastView = {
         let currentForecastView = CurrentForecastView(frame: CGRect(x: 0, y: 0, width: 0, height: 250))
         currentForecastView.configureLabels()
+        currentForecastView.interactionDelegate = self
         return currentForecastView
     }()
     
@@ -111,6 +124,12 @@ class ForecastViewController : UIViewController {
     
 }
 
+extension ForecastViewController : TapIteractionDelegate {
+    func currentViewTapped() {
+        forecastPresenter.getForecastDetailForCurrent()
+    }
+}
+
 extension ForecastViewController : ForecastPresenterDelegate {
     func updateUI() {
         DispatchQueue.main.async {
@@ -125,7 +144,7 @@ extension ForecastViewController : ForecastPresenterDelegate {
     }
     
     func displayDetailView(withData forecastItemDetail: ForecastItemDetailModel) {
-        let detailViewController = ForecastDetailViewController()
+        let detailViewController = ForecastDetailViewController(with: forecastItemDetail)
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

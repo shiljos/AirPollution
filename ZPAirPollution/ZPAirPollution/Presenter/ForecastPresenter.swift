@@ -25,10 +25,11 @@ final class ForecastPresenter {
         }
     }
     
+    
     init(_ apiService: WeatherApiServiceProtocol = WeatherApiService()) {
         self.apiService = apiService
         
-        getAirPollutionItems()
+        getAirPollutionListItems()
         getCurrentAirPollutionItem()
     }    
 
@@ -60,15 +61,38 @@ final class ForecastPresenter {
         delegate?.displayDetailView(withData: airComponents)
     }
     
-    func getAirPollutionItems() {
-        apiService.getAirPollutionItems({ (forecastResponse) in
-            self.sectionedForecast = Dictionary(grouping: forecastResponse.list, by: {$0.formattedDate}).map{$0}.sorted{$0.key.compare($1.key) == .orderedAscending}
+    func getAirPollutionListItems() {
+        getAirPollutionItems { forecastResponse in
+            self.sectionedForecast = Dictionary(grouping: forecastResponse.list, by: {$0.formattedDate}).map{$0}.sorted{self.compareDates($0.key, $1.key)}//{$0.key.compare($1.key) == .orderedAscending}
+        }
+    }
+    
+    func getAirPollutionItems(_ completion: @escaping (ForecastModel) -> ()) {
+        apiService.getAirPollutionItems({ (result) in
+            switch result {
+            case .success(let forecastResponse):
+                completion(forecastResponse)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            
         })
     }
     
+    func compareDates(_ v1: String, _ v2: String) -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        if let firstDate = dateFormatter.date(from: v1),
+           let secondDate = dateFormatter.date(from: v2) {
+            return firstDate < secondDate
+        }
+        return false
+    }
+    
     func getCurrentAirPollutionItem() {
-        apiService.getCurrentAirPollutionItems({ (currentForecast) in
-            self.currentForecastItem = currentForecast.first
+        getAirPollutionItems({ (forecastReponse) in
+            self.currentForecastItem = forecastReponse.first
         })
     }
 }

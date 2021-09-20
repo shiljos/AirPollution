@@ -7,16 +7,33 @@
 
 import Foundation
 
+enum Endpoint {
+    case current
+    case list
+}
+
+
 protocol WeatherApiServiceProtocol {
-    func getAirPollutionItems(_ completion: @escaping (ForecastModel) -> Void)
-    func getCurrentAirPollutionItems(_ completion: @escaping (ForecastModel) -> Void)
+    func getAirPollutionItems(_ completion: @escaping (Result<ForecastModel, Error>) -> Void)
 }
 
 final class WeatherApiService: WeatherApiServiceProtocol {
     private let urlSession = URLSession(configuration: .default)
-    let urlString = "https://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=48.13743&lon=11.57549&appid=034245a71302fc7bd2e4a609e702463a"
+    let currentUrlString = "https://api.openweathermap.org/data/2.5/air_pollution?lat=48.13743&lon=11.57549&appid=034245a71302fc7bd2e4a609e702463a"
+    let forecastUrlString = "https://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=48.13743&lon=11.57549&appid=034245a71302fc7bd2e4a609e702463a"
 
-    func getAirPollutionItems(_ completion: @escaping (ForecastModel) -> Void) {
+    var endpoint: Endpoint? {
+        didSet(newEndpoint) {
+            if newEndpoint == .current {
+                urlString = currentUrlString
+            } else {
+                urlString = forecastUrlString
+            }
+        }
+    }
+    var urlString = ""
+    
+    func getAirPollutionItems(_ completion: @escaping (Result<ForecastModel, Error>) -> Void) {
         guard let url = URL(string: urlString) else {
             return
         }
@@ -25,25 +42,17 @@ final class WeatherApiService: WeatherApiServiceProtocol {
         request.httpMethod = "GET"
 
         urlSession.dataTask(with: request) { (data, response, error) in
-            if let data = data {
-                let forecastItems = try! JSONDecoder().decode(Forecast.self, from: data)
-                completion(forecastItems)
+            if let error = error {
+                completion(.failure(error))
+                return
             }
-        }.resume()
-    }
-    
-    func getCurrentAirPollutionItems(_ completion: @escaping (ForecastModel) -> Void) {
-        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/air_pollution?lat=48.13743&lon=11.57549&appid=034245a71302fc7bd2e4a609e702463a") else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-
-        urlSession.dataTask(with: request) { (data, response, error) in
-            if let data = data {
-                let forecastItems = try! JSONDecoder().decode(Forecast.self, from: data)
-                completion(forecastItems)
+            
+            guard let data = data else { return }
+            do {
+                let forecastItems = try JSONDecoder().decode(Forecast.self, from: data)
+                completion(.success(forecastItems))
+            } catch {
+                completion(.failure(error))
             }
         }.resume()
     }

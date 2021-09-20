@@ -16,9 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
        
-        let vc = ForecastViewController()
-        vc.forecastPresenter = ForecastPresenter(WeatherApiService())
-        window?.rootViewController = UINavigationController(rootViewController: vc)
+        let rootVC = ForecastViewController()
+        rootVC.forecastPresenter = ForecastPresenter()
+        window?.rootViewController = UINavigationController(rootViewController: rootVC)
         window?.makeKeyAndVisible()
         
         return true
