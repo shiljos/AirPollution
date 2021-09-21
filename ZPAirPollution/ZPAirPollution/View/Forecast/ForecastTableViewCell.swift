@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol ForecastCell {
-    func displayForecast(airQualityIndex: String, hour: String, color: UIColor)
-}
-
 class ForecastTableViewCell : UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -19,14 +15,13 @@ class ForecastTableViewCell : UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }   
-}
-
-extension ForecastTableViewCell : ForecastCell {
-    func displayForecast(airQualityIndex: String, hour: String, color: UIColor) {
+    }
+    
+    func configure(_ airQualityIndex: String, _ hour: String, _ color: UIColor) {
         textLabel?.text = hour
         accessoryType = .disclosureIndicator
         detailTextLabel?.text = airQualityIndex
         backgroundColor = color
     }
+
 }

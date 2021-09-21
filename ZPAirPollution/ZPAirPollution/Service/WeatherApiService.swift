@@ -7,34 +7,16 @@
 
 import Foundation
 
-enum Endpoint {
-    case current
-    case list
-}
-
 
 protocol WeatherApiServiceProtocol {
-    func getAirPollutionItems(_ completion: @escaping (Result<ForecastModel, Error>) -> Void)
+    func getAirPollutionItems(_ endpoint: Endpoint, _ completion: @escaping (Result<ForecastModel, Error>) -> Void)
 }
 
-final class WeatherApiService: WeatherApiServiceProtocol {
+final class WeatherApiService : WeatherApiServiceProtocol {
     private let urlSession = URLSession(configuration: .default)
-    let currentUrlString = "https://api.openweathermap.org/data/2.5/air_pollution?lat=48.13743&lon=11.57549&appid=034245a71302fc7bd2e4a609e702463a"
-    let forecastUrlString = "https://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=48.13743&lon=11.57549&appid=034245a71302fc7bd2e4a609e702463a"
 
-    var endpoint: Endpoint? {
-        didSet(newEndpoint) {
-            if newEndpoint == .current {
-                urlString = currentUrlString
-            } else {
-                urlString = forecastUrlString
-            }
-        }
-    }
-    var urlString = ""
-    
-    func getAirPollutionItems(_ completion: @escaping (Result<ForecastModel, Error>) -> Void) {
-        guard let url = URL(string: urlString) else {
+    func getAirPollutionItems(_ endpoint: Endpoint, _ completion: @escaping (Result<ForecastModel, Error>) -> Void) {
+        guard let url = endpoint.makeURL() else {
             return
         }
         
@@ -48,6 +30,7 @@ final class WeatherApiService: WeatherApiServiceProtocol {
             }
             
             guard let data = data else { return }
+            
             do {
                 let forecastItems = try JSONDecoder().decode(Forecast.self, from: data)
                 completion(.success(forecastItems))
@@ -55,5 +38,25 @@ final class WeatherApiService: WeatherApiServiceProtocol {
                 completion(.failure(error))
             }
         }.resume()
+    }
+}
+
+protocol Endpoint {
+    func makeURL() -> URL?
+}
+
+struct ForecastEndpoint : Endpoint {
+    private let urlString: String = "https://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=48.13743&lon=11.57549&appid=034245a71302fc7bd2e4a609e702463a"
+    
+    func makeURL() -> URL? {
+        URL(string: urlString)
+    }
+}
+
+struct CurrentForecastEndpoint : Endpoint {
+    private let urlString: String = "https://api.openweathermap.org/data/2.5/air_pollution?lat=48.13743&lon=11.57549&appid=034245a71302fc7bd2e4a609e702463a"
+    
+    func makeURL() -> URL? {
+        URL(string: urlString)
     }
 }

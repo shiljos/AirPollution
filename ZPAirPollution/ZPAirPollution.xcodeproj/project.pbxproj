@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		057E408126F9B42800720C45 /* CurrentForecastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E408026F9B42800720C45 /* CurrentForecastView.swift */; };
+		057E408326F9B48400720C45 /* ForecastDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E408226F9B48400720C45 /* ForecastDetailView.swift */; };
 		0590ABB026F6299F00CB7186 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0590ABAF26F6299F00CB7186 /* AppDelegate.swift */; };
 		0590ABB426F6299F00CB7186 /* ForecastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0590ABB326F6299F00CB7186 /* ForecastViewController.swift */; };
 		0590ABB926F629A000CB7186 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0590ABB826F629A000CB7186 /* Assets.xcassets */; };
@@ -40,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		057E408026F9B42800720C45 /* CurrentForecastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentForecastView.swift; sourceTree = "<group>"; };
+		057E408226F9B48400720C45 /* ForecastDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastDetailView.swift; sourceTree = "<group>"; };
 		0590ABAC26F6299F00CB7186 /* ZPAirPollution.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZPAirPollution.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0590ABAF26F6299F00CB7186 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0590ABB326F6299F00CB7186 /* ForecastViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +90,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		057E407E26F9B3F200720C45 /* Forecast */ = {
+			isa = PBXGroup;
+			children = (
+				0590ABB326F6299F00CB7186 /* ForecastViewController.swift */,
+				0590ABE926F6479400CB7186 /* ForecastTableViewCell.swift */,
+				057E408026F9B42800720C45 /* CurrentForecastView.swift */,
+			);
+			path = Forecast;
+			sourceTree = "<group>";
+		};
+		057E407F26F9B3FF00720C45 /* ForecastDetail */ = {
+			isa = PBXGroup;
+			children = (
+				0590ABF226F7C67600CB7186 /* ForecastDetailViewController.swift */,
+				057E408226F9B48400720C45 /* ForecastDetailView.swift */,
+			);
+			path = ForecastDetail;
+			sourceTree = "<group>";
+		};
 		0590ABA326F6299F00CB7186 = {
 			isa = PBXGroup;
 			children = (
@@ -152,9 +175,8 @@
 		0590ABE026F62C2F00CB7186 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				0590ABB326F6299F00CB7186 /* ForecastViewController.swift */,
-				0590ABE926F6479400CB7186 /* ForecastTableViewCell.swift */,
-				0590ABF226F7C67600CB7186 /* ForecastDetailViewController.swift */,
+				057E407F26F9B3FF00720C45 /* ForecastDetail */,
+				057E407E26F9B3F200720C45 /* Forecast */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -305,11 +327,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				0590ABF326F7C67600CB7186 /* ForecastDetailViewController.swift in Sources */,
+				057E408126F9B42800720C45 /* CurrentForecastView.swift in Sources */,
 				0590ABEF26F7609300CB7186 /* Forecast.swift in Sources */,
 				0590ABEA26F6479400CB7186 /* ForecastTableViewCell.swift in Sources */,
 				0590ABED26F75FF100CB7186 /* ForecastPresenter.swift in Sources */,
 				0590ABE226F62CAB00CB7186 /* ForecastItem.swift in Sources */,
 				0590ABE526F6302B00CB7186 /* WeatherApiService.swift in Sources */,
+				057E408326F9B48400720C45 /* ForecastDetailView.swift in Sources */,
 				0590ABB426F6299F00CB7186 /* ForecastViewController.swift in Sources */,
 				0590ABF126F760F100CB7186 /* ForecastItemDetail.swift in Sources */,
 				0590ABB026F6299F00CB7186 /* AppDelegate.swift in Sources */,

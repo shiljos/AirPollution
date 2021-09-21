@@ -16,8 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
        
-        let rootVC = ForecastViewController()
-        rootVC.forecastPresenter = ForecastPresenter()
+        let rootVC = ForecastViewController(ForecastPresenter())
         window?.rootViewController = UINavigationController(rootViewController: rootVC)
         window?.makeKeyAndVisible()
         

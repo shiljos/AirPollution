@@ -8,19 +8,25 @@
 import Foundation
 
 protocol ForecastItemDetailModel {
-    var co: ForecastItemComponent { get }
-    var no: ForecastItemComponent { get }
-    var no2: ForecastItemComponent { get }
-    var o3: ForecastItemComponent { get }
-    var so2: ForecastItemComponent { get }
-    var pm2_5: ForecastItemComponent { get }
-    var pm10: ForecastItemComponent { get }
-    var nh3: ForecastItemComponent { get }
+    var co: Component { get }
+    var no: Component { get }
+    var no2: Component { get }
+    var o3: Component { get }
+    var so2: Component { get }
+    var pm2_5: Component { get }
+    var pm10: Component { get }
+    var nh3: Component { get }
     
-    func forecastItemCollection() -> [ForecastItemComponent]
+    func components() -> [(description: String, value: String)]
 }
 
-enum ForecastItemComponent : CustomStringConvertible {
+protocol ForecastItemComponentProtocol {
+    var valueWithUnit: String { get }
+}
+
+typealias Component = ForecastItemComponentProtocol & CustomStringConvertible
+
+enum ForecastItemComponent : Component  {
     
     case co(Float)
     case no(Float)
@@ -78,18 +84,18 @@ enum ForecastItemComponent : CustomStringConvertible {
 
 
 struct ForecastItemDetail : ForecastItemDetailModel {
-    let co: ForecastItemComponent
-    let no: ForecastItemComponent
-    let no2: ForecastItemComponent
-    let o3: ForecastItemComponent
-    let so2: ForecastItemComponent
-    let pm2_5: ForecastItemComponent
-    let pm10: ForecastItemComponent
-    let nh3: ForecastItemComponent
     
-    func forecastItemCollection() -> [ForecastItemComponent] {
-        return Array(arrayLiteral: co, no, no2, o3, so2, pm2_5, pm10, nh3)
-        //[co, no, no2, o3, so2, pm2_5, pm10, nh3]
+    let co: Component
+    let no: Component
+    let no2: Component
+    let o3: Component
+    let so2: Component
+    let pm2_5: Component
+    let pm10: Component
+    let nh3: Component
+    
+    func components() -> [(description: String, value: String)] {
+        [co, no, no2, o3, so2, pm2_5, pm10, nh3].map({ (description: String(describing: $0), value: $0.valueWithUnit) })
     }
 }
 
@@ -101,27 +107,27 @@ extension ForecastItemDetail : Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         let coValue = try container.decode(Float.self, forKey: .co)
-        self.co = .co(coValue)
+        self.co = ForecastItemComponent.co(coValue)
 
         let noValue = try container.decode(Float.self, forKey: .no)
-        self.no = .no(noValue)
+        self.no = ForecastItemComponent.no(noValue)
 
         let no2Value = try container.decode(Float.self, forKey: .no2)
-        self.no2 = .no2(no2Value)
+        self.no2 = ForecastItemComponent.no2(no2Value)
 
         let o3Value = try container.decode(Float.self, forKey: .o3)
-        self.o3 = .o3(o3Value)
+        self.o3 = ForecastItemComponent.o3(o3Value)
 
         let so2Value = try container.decode(Float.self, forKey: .so2)
-        self.so2 = .so2(so2Value)
+        self.so2 = ForecastItemComponent.so2(so2Value)
 
         let pm2_5Value = try container.decode(Float.self, forKey: .pm2_5)
-        self.pm2_5 = .pm2_5(pm2_5Value)
+        self.pm2_5 = ForecastItemComponent.pm2_5(pm2_5Value)
 
         let pm10Value = try container.decode(Float.self, forKey: .pm10)
-        self.pm10 = .pm10(pm10Value)
+        self.pm10 = ForecastItemComponent.pm10(pm10Value)
 
         let nh3Value = try container.decode(Float.self, forKey: .nh3)
-        self.nh3 = .nh3(nh3Value)
+        self.nh3 = ForecastItemComponent.nh3(nh3Value)
     }
 }

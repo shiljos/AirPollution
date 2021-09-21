@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum AirQualityLevel: Int, CustomStringConvertible, Decodable {
+enum AirQualityLevel : Int, CustomStringConvertible, Decodable {
     case good = 1, fair, moderate, poor, veryPoor
     
     var description: String {
@@ -25,7 +25,7 @@ enum AirQualityLevel: Int, CustomStringConvertible, Decodable {
         }
     }
     
-    var color: UIColor {
+    var asColor: UIColor {
         switch self {
             case .good:
                 return .green
@@ -44,7 +44,7 @@ enum AirQualityLevel: Int, CustomStringConvertible, Decodable {
 protocol ForecastItemModel {
     var airQualityIndex: AirQualityLevel { get }
     var unixDate: Double { get }
-    var components: ForecastItemDetailModel { get }
+    var detail: ForecastItemDetailModel { get }
 }
 extension ForecastItemModel {
     var formattedDate: String {
@@ -70,7 +70,7 @@ extension ForecastItemModel {
 struct ForecastItem : ForecastItemModel {
     let airQualityIndex: AirQualityLevel
     let unixDate: Double
-    let components: ForecastItemDetailModel
+    let detail: ForecastItemDetailModel
 }
 
 extension ForecastItem : Decodable {
@@ -91,7 +91,7 @@ extension ForecastItem : Decodable {
         //let unixDate = try container.decode(Double.self, forKey: .unixDate)
         unixDate = try container.decode(Double.self, forKey: .unixDate)
         //date = Date(timeIntervalSince1970: unixDate)
-        components = try container.decode(ForecastItemDetail.self, forKey: .components)
+        detail = try container.decode(ForecastItemDetail.self, forKey: .components)
     }
 }
 

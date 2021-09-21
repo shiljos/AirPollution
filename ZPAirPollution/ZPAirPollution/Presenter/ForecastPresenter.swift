@@ -7,92 +7,113 @@
 
 import Foundation
 
+protocol ForecastPresenterProtocol {
+    func fetchData()
+    func numberOfSections() -> Int
+    func numberOfRows(in section: Int) -> Int
+    func titleForHeader(in section: Int) -> String
+    func setPresenterDelegate(_ presenterDelegate: ForecastPresenterDelegate)
+    func getForecastElement(for indexPath: IndexPath) -> ForecastElement
+    func showForecastDetail(for indexPath: IndexPath)
+    func showForecastDetail()
+}
 
-final class ForecastPresenter {
-    weak var delegate: ForecastPresenterDelegate?
+final class ForecastPresenter : ForecastPresenterProtocol {
+
+    private weak var delegate: ForecastPresenterDelegate?
     private let apiService: WeatherApiServiceProtocol
-    private var sectionedForecast: [(key: String, value: [ForecastItemModel])] = [] {
+    private var sectionedForecast: [(key: String, value: [ForecastItemModel])]! = nil {
         didSet {
             delegate?.updateUI()
         }
     }
 
-    var currentForecastItem: ForecastItemModel! = nil {
+    private var currentForecast: ForecastItemModel! = nil {
         didSet {
-            delegate?.setCurrentForecastViewValues(String(describing: currentForecastItem.airQualityIndex),
-                                                   currentForecastItem.formattedDate,
-                                                   currentForecastItem.airQualityIndex.color)
+            delegate?.updateCurrentView(with: getForecastElement())
         }
     }
-    
     
     init(_ apiService: WeatherApiServiceProtocol = WeatherApiService()) {
         self.apiService = apiService
-        
-        getAirPollutionListItems()
-        getCurrentAirPollutionItem()
-    }    
-
-    func configureCell(_ cell: ForecastCell, _ indexPath: IndexPath) {
-        let forecastItem = sectionedForecast[indexPath.section].value[indexPath.row]
-        cell.displayForecast(airQualityIndex: String(describing: forecastItem.airQualityIndex),
-                             hour: forecastItem.hourComponent,
-                             color: forecastItem.airQualityIndex.color)
     }
     
-    func getItemCount(for section: Int) -> Int {
+    func setPresenterDelegate(_ presenterDelegate: ForecastPresenterDelegate) {
+        delegate = presenterDelegate
+    }
+    
+    func numberOfSections() -> Int {
+        sectionedForecast?.count ?? 0
+    }
+    
+    func numberOfRows(in section: Int) -> Int {
         sectionedForecast[section].value.count
     }
-    func getSectionCount() -> Int {
-        sectionedForecast.count
-    }
     
-    func showSectionHeaderText(for section: Int) -> String {
+    func titleForHeader(in section: Int) -> String {
         sectionedForecast[section].key
     }
     
-    func getForecastDetail(for indexPath: IndexPath) {
-        let airComponents = sectionedForecast[indexPath.section].value[indexPath.row].components
-        delegate?.displayDetailView(withData: airComponents)
+    func getForecastElement() -> ForecastElement {
+        (String(describing: currentForecast.airQualityIndex),
+         currentForecast.formattedDate,
+         currentForecast.airQualityIndex.asColor)
     }
     
-    func getForecastDetailForCurrent() {
-        let airComponents = currentForecastItem.components
-        delegate?.displayDetailView(withData: airComponents)
+    func getForecastElement(for indexPath: IndexPath) -> ForecastElement {
+        let forecastItem = sectionedForecast[indexPath.section].value[indexPath.row]
+        return (String(describing: forecastItem.airQualityIndex),
+                forecastItem.hourComponent,
+                forecastItem.airQualityIndex.asColor)
     }
     
-    func getAirPollutionListItems() {
-        getAirPollutionItems { forecastResponse in
-            self.sectionedForecast = Dictionary(grouping: forecastResponse.list, by: {$0.formattedDate}).map{$0}.sorted{self.compareDates($0.key, $1.key)}//{$0.key.compare($1.key) == .orderedAscending}
-        }
+    func showForecastDetail(for indexPath: IndexPath) {
+        let forecastDetail = sectionedForecast[indexPath.section].value[indexPath.row].detail
+        delegate?.displayDetailView(with: forecastDetail.components())
     }
     
-    func getAirPollutionItems(_ completion: @escaping (ForecastModel) -> ()) {
-        apiService.getAirPollutionItems({ (result) in
+    func showForecastDetail() {
+        let forecastDetail = currentForecast.detail
+        delegate?.displayDetailView(with: forecastDetail.components())
+    }
+}
+
+extension ForecastPresenter {
+    func fetchData() {
+        getAirPollutionListItems()
+        getCurrentAirPollutionItem()
+    }
+    
+    private func getAirPollutionItems(_ endpoint: Endpoint = ForecastEndpoint(), _ completion: @escaping (ForecastModel) -> Void) {
+        apiService.getAirPollutionItems(endpoint, { (result) in
             switch result {
             case .success(let forecastResponse):
                 completion(forecastResponse)
             case .failure(let error):
                 print(error.localizedDescription)
             }
-            
         })
     }
     
-    func compareDates(_ v1: String, _ v2: String) -> Bool {
+   private func getAirPollutionListItems() {
+        let dateFormatter = getDateFormatter()
+        getAirPollutionItems { forecastResponse in
+            self.sectionedForecast = Dictionary(grouping: forecastResponse.items, by: {$0.formattedDate}).map{
+                $0}.sorted{dateFormatter.date(from: $0.key)! < dateFormatter.date(from: $1.key)!}//{$0.key.compare($1.key) == .orderedAscending}
+        }
+    }
+    
+    private func getCurrentAirPollutionItem() {
+        getAirPollutionItems(CurrentForecastEndpoint(), { (forecastReponse) in
+            self.currentForecast = forecastReponse.first
+        })
+    }
+    
+    func getDateFormatter() -> DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .short
         dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        if let firstDate = dateFormatter.date(from: v1),
-           let secondDate = dateFormatter.date(from: v2) {
-            return firstDate < secondDate
-        }
-        return false
+        return dateFormatter
     }
     
-    func getCurrentAirPollutionItem() {
-        getAirPollutionItems({ (forecastReponse) in
-            self.currentForecastItem = forecastReponse.first
-        })
-    }
 }
