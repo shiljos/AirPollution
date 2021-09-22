@@ -15,7 +15,6 @@ final class ForecastDetailViewController : UIViewController {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.alignment = .fill
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.layoutMargins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         stackView.spacing = 10

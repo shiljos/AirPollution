@@ -52,9 +52,10 @@ protocol ForecastItemModel {
     var date: Date { get }
     var detail: ForecastItemDetailModel { get }
 }
+
 extension ForecastItemModel {
     var formattedDate: String {
-        DateFormatter().short(from: date)
+        DateFormatter().shortDate(from: date)
     }
     
     var hourComponent: String {

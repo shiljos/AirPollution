@@ -23,13 +23,12 @@ final class ForecastPresenter : ForecastPresenterProtocol {
     private let apiService: WeatherApiServiceProtocol
     private(set) weak var delegate: ForecastPresenterDelegate?
     //private var sectionedForecast: [(key: String, value: [ForecastItemModel])] = [] {//! = nil {
-    private(set) var sectionedForecast: [[ForecastItemModel]] = [] {
+    private(set) var sectionedForecast: [[ForecastItemModel]]! = nil {
         didSet {
             delegate?.updateUI()
         }
     }
-    private(set) var sectionKeys: [String] = []
-
+    private(set) var sectionKeys: [String]! = nil
     private(set) var currentForecast: ForecastItemModel! = nil {
         didSet {
             delegate?.updateCurrentView(with: getForecastElement())
@@ -85,6 +84,8 @@ final class ForecastPresenter : ForecastPresenterProtocol {
 
 extension ForecastPresenter {
     func fetchData() {
+        sectionKeys = []
+        sectionedForecast = []
         getAirPollutionListItems()
         getCurrentAirPollutionItem()
     }
@@ -95,7 +96,7 @@ extension ForecastPresenter {
             case .success(let forecastResponse):
                 completion(forecastResponse)
             case .failure(let error):
-                print(error.localizedDescription)
+                self.handleError(error)
             }
         })
     }
@@ -104,18 +105,37 @@ extension ForecastPresenter {
         getAirPollutionItems { [unowned self] forecastResponse in
             sectionedForecast = Dictionary(grouping: forecastResponse.items, by: { $0.formattedDate })
                                           .sorted(by: { compareAsc($0.key, $1.key) })
-                                          .map{ sectionKeys.append($0.key); return $0.value }
+                                          .map{ sectionKeys.append(($0.key)); return $0.value }
         }
     }
     
     private func getCurrentAirPollutionItem() {
-        getAirPollutionItems(CurrentForecastEndpoint(), { (forecastReponse) in
-            self.currentForecast = forecastReponse.first
+        getAirPollutionItems(CurrentForecastEndpoint(), { [unowned self] (forecastReponse) in
+            currentForecast = forecastReponse.first
         })
     }
     
     private func compareAsc(_ v1: String, _ v2: String) -> Bool {
         let formatter = DateFormatter()
-        return formatter.short(from: v1) < formatter.short(from: v2)
+        return formatter.shortDate(from: v1) < formatter.shortDate(from: v2)
     }
+    
+    func handleError(_ error: Error) {
+        switch error {
+            case URLError.cannotLoadFromNetwork, URLError.networkConnectionLost, URLError.notConnectedToInternet:
+                showOfflineView()
+            case ServiceError.unexpectedResponse://let error as ServiceError where error == .unexpectedResponse:
+                showUnexpectedDataAlertView()
+            case is URLError:
+                showNetworkErrorView()
+            default:
+                print(error.localizedDescription)
+        }
+    }
+    
+    func showOfflineView() {}
+    
+    func showNetworkErrorView() {}
+    
+    func showUnexpectedDataAlertView() {}
 }

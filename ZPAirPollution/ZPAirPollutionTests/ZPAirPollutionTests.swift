@@ -16,13 +16,11 @@ final class ZPAirPollutionTests: XCTestCase {
         presenter = ForecastPresenter(MockAPIService())
     }
 
-    override func tearDown() {
-    
-    }
+    override func tearDown() {}
     
     func testInitPresenterIfDataStructuresEmptyOrNil() {
-        XCTAssertTrue(presenter.sectionedForecast.isEmpty)
-        XCTAssertTrue(presenter.sectionKeys.isEmpty)
+        XCTAssertNil(presenter.sectionedForecast)
+        XCTAssertNil(presenter.sectionKeys)
         XCTAssertNil(presenter.currentForecast)
     }
 
@@ -45,6 +43,14 @@ final class ZPAirPollutionTests: XCTestCase {
     }
     
     func testPresenterSectionedForecastCorrectlyMappedWithSectionKeys() {
+        presenter.fetchData()
+        
+        XCTAssertEqual(presenter.sectionedForecast.count, presenter.sectionKeys.count)
+        XCTAssertEqual(presenter.sectionKeys.count, 2)
+    }
+    
+    func testPresenterSectionedForecastCorrectNumberOfItemsIfReload() {
+        presenter.fetchData()
         presenter.fetchData()
         
         XCTAssertEqual(presenter.sectionedForecast.count, presenter.sectionKeys.count)
@@ -75,7 +81,7 @@ final class ZPAirPollutionTests: XCTestCase {
     
     func testPresenterStructuresDataPassedForCurrent() {
         presenter.fetchData()
-        let mockForecast =  MockForecast.getMockForecastItems().first
+        let mockForecast = MockForecast().getMockForecastItems().first
         let mockForecastElement = (mockForecast?.airQualityIndex.description, mockForecast?.formattedDate, mockForecast?.airQualityIndex.asColor)
         
         XCTAssertEqual(presenter.getForecastElement().0, mockForecastElement.0)
@@ -112,7 +118,7 @@ final class ZPAirPollutionTests: XCTestCase {
         presenter.showForecastDetail()
         XCTAssertTrue(!mockVC.displayedItemDetailComponents.isEmpty)
         
-        let mockComponents = MockForecast.getMockForecastItems().first?.detail.components()
+        let mockComponents = MockForecast().getMockForecastItems().first?.detail.components()
         XCTAssertEqual(mockVC.displayedItemDetailComponents.count, mockComponents!.count)
         for (index, component) in mockVC.displayedItemDetailComponents.enumerated() {
             XCTAssertEqual(component.0, mockComponents![index].0)
@@ -127,5 +133,18 @@ final class ZPAirPollutionTests: XCTestCase {
         
         XCTAssertTrue(mockVC.uiUpdated)
         XCTAssertTrue(mockVC.currentViewUpdated)
+    }
+    
+    func testUnexpectedResponseServiceError() {
+        let apiService = ServiceErrorResponseMockAPIService()
+        apiService.getAirPollutionItems { result in
+            switch result {
+                case .success(_):
+                    XCTFail()
+                case .failure(let error):
+                    XCTAssertTrue(error is ServiceError)
+                    XCTAssertEqual(error as? ServiceError, .unexpectedResponse)
+            }
+        }
     }
 }

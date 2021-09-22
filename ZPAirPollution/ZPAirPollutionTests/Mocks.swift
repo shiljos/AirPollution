@@ -8,7 +8,7 @@
 import XCTest
 @testable import ZPAirPollution
 
-struct MockAirQuality: AirQuality {
+struct MockAirQuality : AirQuality {
     var description: String
     var asColor: UIColor
 }
@@ -42,7 +42,11 @@ struct MockForecastItemDetail : ForecastItemDetailModel {
 struct MockForecast : ForecastModel {
     var items: [ForecastItemModel]
     
-    static func getMockForecastItems() -> [ForecastItemModel] {
+    init(items: [ForecastItemModel] = mockForecastItems) {
+        self.items = items
+    }
+    
+    func getMockForecastItems() -> [ForecastItemModel] {
         mockForecastItems
     }
 }
@@ -61,7 +65,18 @@ let mockForecastItems: [MockForecastItem] = [
 
 class MockAPIService : WeatherApiServiceProtocol {
     func getAirPollutionItems(_ endpoint: Endpoint, _ completion: @escaping (Result<ForecastModel, Error>) -> Void) {
-            completion(Result.success(MockForecast(items: mockForecastItems)))
+            completion(Result.success(MockForecast()))
+    }
+}
+
+struct EmptyEndpoint : Endpoint {
+    func makeURL() -> URL? {
+        nil
+    }
+}
+class ServiceErrorResponseMockAPIService : WeatherApiServiceProtocol {
+    func getAirPollutionItems(_ endpoint: Endpoint = EmptyEndpoint(), _ completion: @escaping (Result<ForecastModel, Error>) -> Void) {
+        completion(Result.failure(ServiceError.unexpectedResponse))
     }
 }
 

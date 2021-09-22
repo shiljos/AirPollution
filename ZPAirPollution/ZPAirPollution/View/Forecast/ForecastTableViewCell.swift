@@ -17,11 +17,10 @@ class ForecastTableViewCell : UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(_ airQualityIndex: String, _ hour: String, _ color: UIColor) {
+    func configure(with airQualityIndex: String, _ hour: String, _ color: UIColor) {
         textLabel?.text = hour
         accessoryType = .disclosureIndicator
         detailTextLabel?.text = airQualityIndex
         backgroundColor = color
     }
-
 }

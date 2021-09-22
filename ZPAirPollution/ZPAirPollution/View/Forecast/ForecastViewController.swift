@@ -16,6 +16,7 @@ protocol ForecastPresenterDelegate : AnyObject {
 typealias ForecastDetailElement = (description: String, value: String)
 typealias ForecastElement = (String, String, UIColor)
 
+
 final class ForecastViewController : UIViewController {
     
     let reuseIdentifier = "forecast-cell"
@@ -57,7 +58,7 @@ final class ForecastViewController : UIViewController {
         tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(tableView)
         tableView.tableHeaderView = currentForecastView
-        tableView.sectionHeaderTopPadding = 0.0
+        tableView.sectionHeaderTopPadding = 0.0 // iOS15
     }
     
     func configureDataSourceDelegate() {
@@ -124,7 +125,7 @@ extension ForecastViewController : UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ForecastTableViewCell
         
         let forecastElement = forecastPresenter.getForecastElement(for: indexPath)
-        cell.configure(forecastElement.0, forecastElement.1, forecastElement.2)
+        cell.configure(with: forecastElement.0, forecastElement.1, forecastElement.2)
         return cell
     }
 }

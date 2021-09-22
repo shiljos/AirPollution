@@ -106,27 +106,27 @@ extension ForecastItemDetail : Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         let coValue = try container.decode(Float.self, forKey: .co)
-        self.co = ForecastItemComponent.co(coValue)
+        co = ForecastItemComponent.co(coValue)
 
         let noValue = try container.decode(Float.self, forKey: .no)
-        self.no = ForecastItemComponent.no(noValue)
+        no = ForecastItemComponent.no(noValue)
 
         let no2Value = try container.decode(Float.self, forKey: .no2)
-        self.no2 = ForecastItemComponent.no2(no2Value)
+        no2 = ForecastItemComponent.no2(no2Value)
 
         let o3Value = try container.decode(Float.self, forKey: .o3)
-        self.o3 = ForecastItemComponent.o3(o3Value)
+        o3 = ForecastItemComponent.o3(o3Value)
 
         let so2Value = try container.decode(Float.self, forKey: .so2)
-        self.so2 = ForecastItemComponent.so2(so2Value)
+        so2 = ForecastItemComponent.so2(so2Value)
 
         let pm2_5Value = try container.decode(Float.self, forKey: .pm2_5)
-        self.pm2_5 = ForecastItemComponent.pm2_5(pm2_5Value)
+        pm2_5 = ForecastItemComponent.pm2_5(pm2_5Value)
 
         let pm10Value = try container.decode(Float.self, forKey: .pm10)
-        self.pm10 = ForecastItemComponent.pm10(pm10Value)
+        pm10 = ForecastItemComponent.pm10(pm10Value)
 
         let nh3Value = try container.decode(Float.self, forKey: .nh3)
-        self.nh3 = ForecastItemComponent.nh3(nh3Value)
+        nh3 = ForecastItemComponent.nh3(nh3Value)
     }
 }

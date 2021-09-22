@@ -29,7 +29,10 @@ final class WeatherApiService : WeatherApiServiceProtocol {
                 return
             }
             
-            guard let data = data else { return }
+            guard let data = data, !data.isEmpty else {
+                completion(.failure(ServiceError.unexpectedResponse))
+                return
+            }
             
             do {
                 let forecastItems = try JSONDecoder().decode(Forecast.self, from: data)
@@ -39,4 +42,12 @@ final class WeatherApiService : WeatherApiServiceProtocol {
             }
         }.resume()
     }
+}
+
+enum ServiceError : Error {
+    case unexpectedResponse
+}
+
+func ~=<E: Error & Equatable>(lhs: Error, rhs: E) -> Bool {
+    return (lhs as? E) == rhs
 }

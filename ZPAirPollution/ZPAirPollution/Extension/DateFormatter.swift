@@ -14,12 +14,12 @@ extension DateFormatter {
         timeZone = TimeZone(identifier: "UTC")
     }
 
-    func short(from value: String) -> Date! {
+    func shortDate(from value: String) -> Date! {
         setFormat()
         return date(from: value)
     }
     
-    func short(from value: Date) -> String {
+    func shortDate(from value: Date) -> String {
         setFormat()
         return string(from: value)
     }
