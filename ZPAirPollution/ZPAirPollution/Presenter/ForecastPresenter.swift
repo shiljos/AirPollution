@@ -19,16 +19,18 @@ protocol ForecastPresenterProtocol {
 }
 
 final class ForecastPresenter : ForecastPresenterProtocol {
-
-    private weak var delegate: ForecastPresenterDelegate?
+    
     private let apiService: WeatherApiServiceProtocol
-    private var sectionedForecast: [(key: String, value: [ForecastItemModel])]! = nil {
+    private(set) weak var delegate: ForecastPresenterDelegate?
+    //private var sectionedForecast: [(key: String, value: [ForecastItemModel])] = [] {//! = nil {
+    private(set) var sectionedForecast: [[ForecastItemModel]] = [] {
         didSet {
             delegate?.updateUI()
         }
     }
+    private(set) var sectionKeys: [String] = []
 
-    private var currentForecast: ForecastItemModel! = nil {
+    private(set) var currentForecast: ForecastItemModel! = nil {
         didSet {
             delegate?.updateCurrentView(with: getForecastElement())
         }
@@ -43,15 +45,18 @@ final class ForecastPresenter : ForecastPresenterProtocol {
     }
     
     func numberOfSections() -> Int {
-        sectionedForecast?.count ?? 0
+        //sectionedForecast.count
+        sectionKeys.count
     }
     
     func numberOfRows(in section: Int) -> Int {
-        sectionedForecast[section].value.count
+        sectionedForecast[section].count
+        //sectionedForecast[section].value.count
     }
     
     func titleForHeader(in section: Int) -> String {
-        sectionedForecast[section].key
+        sectionKeys[section]
+        //sectionedForecast[section].key
     }
     
     func getForecastElement() -> ForecastElement {
@@ -61,14 +66,14 @@ final class ForecastPresenter : ForecastPresenterProtocol {
     }
     
     func getForecastElement(for indexPath: IndexPath) -> ForecastElement {
-        let forecastItem = sectionedForecast[indexPath.section].value[indexPath.row]
+        let forecastItem = sectionedForecast[indexPath.section][indexPath.row]
         return (String(describing: forecastItem.airQualityIndex),
                 forecastItem.hourComponent,
                 forecastItem.airQualityIndex.asColor)
     }
     
     func showForecastDetail(for indexPath: IndexPath) {
-        let forecastDetail = sectionedForecast[indexPath.section].value[indexPath.row].detail
+        let forecastDetail = sectionedForecast[indexPath.section][indexPath.row].detail
         delegate?.displayDetailView(with: forecastDetail.components())
     }
     
@@ -96,10 +101,10 @@ extension ForecastPresenter {
     }
     
    private func getAirPollutionListItems() {
-        let dateFormatter = getDateFormatter()
-        getAirPollutionItems { forecastResponse in
-            self.sectionedForecast = Dictionary(grouping: forecastResponse.items, by: {$0.formattedDate}).map{
-                $0}.sorted{dateFormatter.date(from: $0.key)! < dateFormatter.date(from: $1.key)!}//{$0.key.compare($1.key) == .orderedAscending}
+        getAirPollutionItems { [unowned self] forecastResponse in
+            sectionedForecast = Dictionary(grouping: forecastResponse.items, by: { $0.formattedDate })
+                                          .sorted(by: { compareAsc($0.key, $1.key) })
+                                          .map{ sectionKeys.append($0.key); return $0.value }
         }
     }
     
@@ -109,11 +114,8 @@ extension ForecastPresenter {
         })
     }
     
-    func getDateFormatter() -> DateFormatter {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        return dateFormatter
+    private func compareAsc(_ v1: String, _ v2: String) -> Bool {
+        let formatter = DateFormatter()
+        return formatter.short(from: v1) < formatter.short(from: v2)
     }
-    
 }

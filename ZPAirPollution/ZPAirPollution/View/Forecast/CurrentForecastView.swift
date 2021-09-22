@@ -56,7 +56,7 @@ final class CurrentForecastView : UIView {
     
     func setDisplayValues(with forecastElement: ForecastElement) {
         airQualityValueLabel.text = forecastElement.0
-        airQualityValueLabel.font = UIFont.systemFont(ofSize: 30)
+        airQualityValueLabel.font = UIFont.systemFont(ofSize: 40)
         airQualityLabel.text = "Air Quality"
         dateLabel.text = forecastElement.1
         backgroundColor = forecastElement.2

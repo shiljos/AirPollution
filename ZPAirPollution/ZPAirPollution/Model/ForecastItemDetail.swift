@@ -82,7 +82,6 @@ enum ForecastItemComponent : Component  {
     }
 }
 
-
 struct ForecastItemDetail : ForecastItemDetailModel {
     
     let co: Component

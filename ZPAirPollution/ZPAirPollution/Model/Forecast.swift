@@ -12,9 +12,6 @@ protocol ForecastModel {
 }
 
 extension ForecastModel {
-    var count: Int {
-        items.count
-    }
     var first: ForecastItemModel? {
         return items.first
     }
@@ -28,6 +25,7 @@ extension Forecast : Decodable {
     enum CodingKeys : String, CodingKey {
         case items = "list"
     }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         items = try container.decode([ForecastItem].self, forKey: .items)

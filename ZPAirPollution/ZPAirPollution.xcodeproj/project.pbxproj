@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0547131526FB2FD7004475B6 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547131426FB2FD7004475B6 /* Endpoint.swift */; };
+		0547131826FB3A2D004475B6 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547131726FB3A2D004475B6 /* DateFormatter.swift */; };
+		0547131A26FB50BD004475B6 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0547131926FB50BD004475B6 /* Mocks.swift */; };
 		057E408126F9B42800720C45 /* CurrentForecastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E408026F9B42800720C45 /* CurrentForecastView.swift */; };
 		057E408326F9B48400720C45 /* ForecastDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057E408226F9B48400720C45 /* ForecastDetailView.swift */; };
 		0590ABB026F6299F00CB7186 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0590ABAF26F6299F00CB7186 /* AppDelegate.swift */; };
@@ -14,7 +17,6 @@
 		0590ABB926F629A000CB7186 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0590ABB826F629A000CB7186 /* Assets.xcassets */; };
 		0590ABBC26F629A000CB7186 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0590ABBA26F629A000CB7186 /* LaunchScreen.storyboard */; };
 		0590ABC726F629A000CB7186 /* ZPAirPollutionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0590ABC626F629A000CB7186 /* ZPAirPollutionTests.swift */; };
-		0590ABD226F629A000CB7186 /* ZPAirPollutionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0590ABD126F629A000CB7186 /* ZPAirPollutionUITests.swift */; };
 		0590ABE226F62CAB00CB7186 /* ForecastItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0590ABE126F62CAB00CB7186 /* ForecastItem.swift */; };
 		0590ABE526F6302B00CB7186 /* WeatherApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0590ABE426F6302B00CB7186 /* WeatherApiService.swift */; };
 		0590ABEA26F6479400CB7186 /* ForecastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0590ABE926F6479400CB7186 /* ForecastTableViewCell.swift */; };
@@ -32,16 +34,12 @@
 			remoteGlobalIDString = 0590ABAB26F6299F00CB7186;
 			remoteInfo = ZPAirPollution;
 		};
-		0590ABCE26F629A000CB7186 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0590ABA426F6299F00CB7186 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0590ABAB26F6299F00CB7186;
-			remoteInfo = ZPAirPollution;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0547131426FB2FD7004475B6 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		0547131726FB3A2D004475B6 /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
+		0547131926FB50BD004475B6 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 		057E408026F9B42800720C45 /* CurrentForecastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentForecastView.swift; sourceTree = "<group>"; };
 		057E408226F9B48400720C45 /* ForecastDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastDetailView.swift; sourceTree = "<group>"; };
 		0590ABAC26F6299F00CB7186 /* ZPAirPollution.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZPAirPollution.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -53,9 +51,6 @@
 		0590ABC226F629A000CB7186 /* ZPAirPollutionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZPAirPollutionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0590ABC626F629A000CB7186 /* ZPAirPollutionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZPAirPollutionTests.swift; sourceTree = "<group>"; };
 		0590ABC826F629A000CB7186 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0590ABCD26F629A000CB7186 /* ZPAirPollutionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZPAirPollutionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0590ABD126F629A000CB7186 /* ZPAirPollutionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZPAirPollutionUITests.swift; sourceTree = "<group>"; };
-		0590ABD326F629A000CB7186 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0590ABE126F62CAB00CB7186 /* ForecastItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastItem.swift; sourceTree = "<group>"; };
 		0590ABE426F6302B00CB7186 /* WeatherApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherApiService.swift; sourceTree = "<group>"; };
 		0590ABE926F6479400CB7186 /* ForecastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastTableViewCell.swift; sourceTree = "<group>"; };
@@ -80,22 +75,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0590ABCA26F629A000CB7186 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0547131626FB39C6004475B6 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				0547131726FB3A2D004475B6 /* DateFormatter.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		057E407E26F9B3F200720C45 /* Forecast */ = {
 			isa = PBXGroup;
 			children = (
 				0590ABB326F6299F00CB7186 /* ForecastViewController.swift */,
-				0590ABE926F6479400CB7186 /* ForecastTableViewCell.swift */,
 				057E408026F9B42800720C45 /* CurrentForecastView.swift */,
+				0590ABE926F6479400CB7186 /* ForecastTableViewCell.swift */,
 			);
 			path = Forecast;
 			sourceTree = "<group>";
@@ -114,7 +110,6 @@
 			children = (
 				0590ABAE26F6299F00CB7186 /* ZPAirPollution */,
 				0590ABC526F629A000CB7186 /* ZPAirPollutionTests */,
-				0590ABD026F629A000CB7186 /* ZPAirPollutionUITests */,
 				0590ABAD26F6299F00CB7186 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -124,7 +119,6 @@
 			children = (
 				0590ABAC26F6299F00CB7186 /* ZPAirPollution.app */,
 				0590ABC226F629A000CB7186 /* ZPAirPollutionTests.xctest */,
-				0590ABCD26F629A000CB7186 /* ZPAirPollutionUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -136,6 +130,7 @@
 				0590ABE326F6301000CB7186 /* Service */,
 				0590ABE026F62C2F00CB7186 /* View */,
 				0590ABDF26F62C2400CB7186 /* Model */,
+				0547131626FB39C6004475B6 /* Extension */,
 				0590ABAF26F6299F00CB7186 /* AppDelegate.swift */,
 				0590ABB826F629A000CB7186 /* Assets.xcassets */,
 				0590ABBA26F629A000CB7186 /* LaunchScreen.storyboard */,
@@ -148,25 +143,17 @@
 			isa = PBXGroup;
 			children = (
 				0590ABC626F629A000CB7186 /* ZPAirPollutionTests.swift */,
+				0547131926FB50BD004475B6 /* Mocks.swift */,
 				0590ABC826F629A000CB7186 /* Info.plist */,
 			);
 			path = ZPAirPollutionTests;
 			sourceTree = "<group>";
 		};
-		0590ABD026F629A000CB7186 /* ZPAirPollutionUITests */ = {
-			isa = PBXGroup;
-			children = (
-				0590ABD126F629A000CB7186 /* ZPAirPollutionUITests.swift */,
-				0590ABD326F629A000CB7186 /* Info.plist */,
-			);
-			path = ZPAirPollutionUITests;
-			sourceTree = "<group>";
-		};
 		0590ABDF26F62C2400CB7186 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				0590ABE126F62CAB00CB7186 /* ForecastItem.swift */,
 				0590ABEE26F7609300CB7186 /* Forecast.swift */,
+				0590ABE126F62CAB00CB7186 /* ForecastItem.swift */,
 				0590ABF026F760F100CB7186 /* ForecastItemDetail.swift */,
 			);
 			path = Model;
@@ -185,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				0590ABE426F6302B00CB7186 /* WeatherApiService.swift */,
+				0547131426FB2FD7004475B6 /* Endpoint.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -235,24 +223,6 @@
 			productReference = 0590ABC226F629A000CB7186 /* ZPAirPollutionTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		0590ABCC26F629A000CB7186 /* ZPAirPollutionUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0590ABDC26F629A000CB7186 /* Build configuration list for PBXNativeTarget "ZPAirPollutionUITests" */;
-			buildPhases = (
-				0590ABC926F629A000CB7186 /* Sources */,
-				0590ABCA26F629A000CB7186 /* Frameworks */,
-				0590ABCB26F629A000CB7186 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0590ABCF26F629A000CB7186 /* PBXTargetDependency */,
-			);
-			name = ZPAirPollutionUITests;
-			productName = ZPAirPollutionUITests;
-			productReference = 0590ABCD26F629A000CB7186 /* ZPAirPollutionUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -266,10 +236,6 @@
 						CreatedOnToolsVersion = 12.5.1;
 					};
 					0590ABC126F629A000CB7186 = {
-						CreatedOnToolsVersion = 12.5.1;
-						TestTargetID = 0590ABAB26F6299F00CB7186;
-					};
-					0590ABCC26F629A000CB7186 = {
 						CreatedOnToolsVersion = 12.5.1;
 						TestTargetID = 0590ABAB26F6299F00CB7186;
 					};
@@ -290,7 +256,6 @@
 			targets = (
 				0590ABAB26F6299F00CB7186 /* ZPAirPollution */,
 				0590ABC126F629A000CB7186 /* ZPAirPollutionTests */,
-				0590ABCC26F629A000CB7186 /* ZPAirPollutionUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -312,13 +277,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0590ABCB26F629A000CB7186 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -330,12 +288,14 @@
 				057E408126F9B42800720C45 /* CurrentForecastView.swift in Sources */,
 				0590ABEF26F7609300CB7186 /* Forecast.swift in Sources */,
 				0590ABEA26F6479400CB7186 /* ForecastTableViewCell.swift in Sources */,
+				0547131826FB3A2D004475B6 /* DateFormatter.swift in Sources */,
 				0590ABED26F75FF100CB7186 /* ForecastPresenter.swift in Sources */,
 				0590ABE226F62CAB00CB7186 /* ForecastItem.swift in Sources */,
 				0590ABE526F6302B00CB7186 /* WeatherApiService.swift in Sources */,
 				057E408326F9B48400720C45 /* ForecastDetailView.swift in Sources */,
 				0590ABB426F6299F00CB7186 /* ForecastViewController.swift in Sources */,
 				0590ABF126F760F100CB7186 /* ForecastItemDetail.swift in Sources */,
+				0547131526FB2FD7004475B6 /* Endpoint.swift in Sources */,
 				0590ABB026F6299F00CB7186 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -345,14 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0590ABC726F629A000CB7186 /* ZPAirPollutionTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0590ABC926F629A000CB7186 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0590ABD226F629A000CB7186 /* ZPAirPollutionUITests.swift in Sources */,
+				0547131A26FB50BD004475B6 /* Mocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,11 +316,6 @@
 			isa = PBXTargetDependency;
 			target = 0590ABAB26F6299F00CB7186 /* ZPAirPollution */;
 			targetProxy = 0590ABC326F629A000CB7186 /* PBXContainerItemProxy */;
-		};
-		0590ABCF26F629A000CB7186 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0590ABAB26F6299F00CB7186 /* ZPAirPollution */;
-			targetProxy = 0590ABCE26F629A000CB7186 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -434,7 +382,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -489,7 +437,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -545,7 +493,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A367Y8SJ4T;
 				INFOPLIST_FILE = ZPAirPollutionTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -567,7 +515,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A367Y8SJ4T;
 				INFOPLIST_FILE = ZPAirPollutionTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -578,46 +526,6 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZPAirPollution.app/ZPAirPollution";
-			};
-			name = Release;
-		};
-		0590ABDD26F629A000CB7186 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = A367Y8SJ4T;
-				INFOPLIST_FILE = ZPAirPollutionUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.intermaps.yamato.apForecast.ZPAirPollutionUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ZPAirPollution;
-			};
-			name = Debug;
-		};
-		0590ABDE26F629A000CB7186 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = A367Y8SJ4T;
-				INFOPLIST_FILE = ZPAirPollutionUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.intermaps.yamato.apForecast.ZPAirPollutionUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ZPAirPollution;
 			};
 			name = Release;
 		};
@@ -647,15 +555,6 @@
 			buildConfigurations = (
 				0590ABDA26F629A000CB7186 /* Debug */,
 				0590ABDB26F629A000CB7186 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0590ABDC26F629A000CB7186 /* Build configuration list for PBXNativeTarget "ZPAirPollutionUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0590ABDD26F629A000CB7186 /* Debug */,
-				0590ABDE26F629A000CB7186 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

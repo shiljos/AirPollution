@@ -39,6 +39,7 @@ final class ForecastDetailView : UIView {
     
     func configureHierarchy() {
         backgroundColor = .white
+        
         addSubview(descriptionLabel)
         addSubview(valueLabel)
         

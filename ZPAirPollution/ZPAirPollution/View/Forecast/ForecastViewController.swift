@@ -30,7 +30,7 @@ final class ForecastViewController : UIViewController {
         return currentForecastView
     }()
     
-    init(_ forecastPresenter: ForecastPresenterProtocol) {
+    init(_ forecastPresenter: ForecastPresenterProtocol = ForecastPresenter()) {
         self.forecastPresenter = forecastPresenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -57,6 +57,7 @@ final class ForecastViewController : UIViewController {
         tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(tableView)
         tableView.tableHeaderView = currentForecastView
+        tableView.sectionHeaderTopPadding = 0.0
     }
     
     func configureDataSourceDelegate() {

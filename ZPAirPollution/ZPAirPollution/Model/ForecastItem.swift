@@ -7,7 +7,13 @@
 
 import UIKit
 
-enum AirQualityLevel : Int, CustomStringConvertible, Decodable {
+protocol AirQualityProtocol {
+    var asColor: UIColor { get }
+}
+
+typealias AirQuality = AirQualityProtocol & CustomStringConvertible
+
+enum AirQualityLevel : Int, AirQuality, Decodable {
     case good = 1, fair, moderate, poor, veryPoor
     
     var description: String {
@@ -42,41 +48,30 @@ enum AirQualityLevel : Int, CustomStringConvertible, Decodable {
 }
 
 protocol ForecastItemModel {
-    var airQualityIndex: AirQualityLevel { get }
-    var unixDate: Double { get }
+    var airQualityIndex: AirQuality { get }
+    var date: Date { get }
     var detail: ForecastItemDetailModel { get }
 }
 extension ForecastItemModel {
     var formattedDate: String {
-        let dateFormatter = DateFormatter()
-        let date = Date(timeIntervalSince1970: unixDate)
-        dateFormatter.dateStyle = DateFormatter.Style.short
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        let dateAsFormattedString = dateFormatter.string(from: date)
-        
-        return dateAsFormattedString
+        DateFormatter().short(from: date)
     }
     
     var hourComponent: String {
-        let formatter = DateFormatter()
-        let date = Date(timeIntervalSince1970: unixDate)
-        formatter.timeZone = TimeZone(identifier: "UTC")
-        formatter.dateFormat = "hh a"
-        let hourString = formatter.string(from: date)
-        return hourString
+        DateFormatter().formattedHour(from: date)
     }
 }
 
 struct ForecastItem : ForecastItemModel {
-    let airQualityIndex: AirQualityLevel
-    let unixDate: Double
+    let airQualityIndex: AirQuality
+    let date: Date
     let detail: ForecastItemDetailModel
 }
 
 extension ForecastItem : Decodable {
     enum CodingKeys: String, CodingKey {
         case main
-        case unixDate = "dt"
+        case date = "dt"
         case components
         
         enum AirQualityCodingKeys: String, CodingKey {
@@ -88,13 +83,8 @@ extension ForecastItem : Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let mainContainer = try container.nestedContainer(keyedBy: CodingKeys.AirQualityCodingKeys.self, forKey: .main)
         airQualityIndex = try mainContainer.decode(AirQualityLevel.self, forKey: .aqi)
-        //let unixDate = try container.decode(Double.self, forKey: .unixDate)
-        unixDate = try container.decode(Double.self, forKey: .unixDate)
-        //date = Date(timeIntervalSince1970: unixDate)
+        let unixDate = try container.decode(Double.self, forKey: .date)
+        date = Date(timeIntervalSince1970: unixDate)
         detail = try container.decode(ForecastItemDetail.self, forKey: .components)
     }
 }
-
-
-
-
