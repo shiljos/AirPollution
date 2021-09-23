@@ -99,9 +99,10 @@ struct ForecastItemDetail : ForecastItemDetailModel {
 }
 
 extension ForecastItemDetail : Decodable {
-    enum CodingKeys : String, CodingKey {
+    enum CodingKeys : CodingKey {
         case co, no, no2, o3, so2, pm2_5, pm10, nh3
     }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 

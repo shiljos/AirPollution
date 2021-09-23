@@ -13,7 +13,6 @@ protocol WeatherApiServiceProtocol {
 }
 
 final class WeatherApiService : WeatherApiServiceProtocol {
-    private let urlSession = URLSession(configuration: .default)
 
     func getAirPollutionItems(_ endpoint: Endpoint, _ completion: @escaping (Result<ForecastModel, Error>) -> Void) {
         guard let url = endpoint.makeURL() else {
@@ -23,7 +22,7 @@ final class WeatherApiService : WeatherApiServiceProtocol {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
 
-        urlSession.dataTask(with: request) { (data, response, error) in
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -46,8 +45,9 @@ final class WeatherApiService : WeatherApiServiceProtocol {
 
 enum ServiceError : Error {
     case unexpectedResponse
+    
+    static func ~=(lhs: Error, rhs: ServiceError) -> Bool {
+        return (lhs as? ServiceError) == rhs
+    }
 }
 
-func ~=<E: Error & Equatable>(lhs: Error, rhs: E) -> Bool {
-    return (lhs as? E) == rhs
-}

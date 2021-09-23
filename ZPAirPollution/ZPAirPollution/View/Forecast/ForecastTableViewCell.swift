@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ForecastTableViewCell : UITableViewCell {
+final class ForecastTableViewCell : UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)

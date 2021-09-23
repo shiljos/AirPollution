@@ -68,8 +68,8 @@ final class ForecastViewController : UIViewController {
     }
     
     func configurePresentation() {
+        forecastPresenter.setPresenterDelegate(self)
         forecastPresenter.fetchData()
-        forecastPresenter.setPresenterDelegate(self)  
     }
 }
 
@@ -129,4 +129,3 @@ extension ForecastViewController : UITableViewDataSource {
         return cell
     }
 }
-

@@ -70,22 +70,22 @@ struct ForecastItem : ForecastItemModel {
 }
 
 extension ForecastItem : Decodable {
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys : CodingKey {
         case main
-        case date = "dt"
+        case dt
         case components
         
-        enum AirQualityCodingKeys: String, CodingKey {
+        enum AirQualityCodingKeys : CodingKey {
             case aqi
         }
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let mainContainer = try container.nestedContainer(keyedBy: CodingKeys.AirQualityCodingKeys.self, forKey: .main)
         airQualityIndex = try mainContainer.decode(AirQualityLevel.self, forKey: .aqi)
-        let unixDate = try container.decode(Double.self, forKey: .date)
-        date = Date(timeIntervalSince1970: unixDate)
+        let unixDate = try container.decode(Double.self, forKey: .dt)
+        date = DateFormatter().fromUnixDate(unixDate)
         detail = try container.decode(ForecastItemDetail.self, forKey: .components)
     }
 }

@@ -19,15 +19,13 @@ final class ZPAirPollutionTests: XCTestCase {
     override func tearDown() {}
     
     func testInitPresenterIfDataStructuresEmptyOrNil() {
-        XCTAssertNil(presenter.sectionedForecast)
-        XCTAssertNil(presenter.sectionKeys)
+        XCTAssertTrue(presenter.sectionedForecast.isEmpty)
         XCTAssertNil(presenter.currentForecast)
     }
 
     func testInitPresenterWithDataIfDataStructuresEmptyOrNil() {
         presenter.fetchData()
         XCTAssertTrue(!presenter.sectionedForecast.isEmpty)
-        XCTAssertTrue(!presenter.sectionKeys.isEmpty)
         XCTAssertNotNil(presenter.currentForecast)
     }
     
@@ -42,25 +40,32 @@ final class ZPAirPollutionTests: XCTestCase {
         XCTAssertNotNil(presenter.delegate)
     }
     
-    func testPresenterSectionedForecastCorrectlyMappedWithSectionKeys() {
+    func testPresenterSectionedForecastCorrectNumberOfItems() {
         presenter.fetchData()
         
-        XCTAssertEqual(presenter.sectionedForecast.count, presenter.sectionKeys.count)
-        XCTAssertEqual(presenter.sectionKeys.count, 2)
+        XCTAssertEqual(presenter.sectionedForecast.count, 2)
+        XCTAssertEqual(presenter.numberOfSections(), 2)
     }
     
     func testPresenterSectionedForecastCorrectNumberOfItemsIfReload() {
         presenter.fetchData()
         presenter.fetchData()
         
-        XCTAssertEqual(presenter.sectionedForecast.count, presenter.sectionKeys.count)
-        XCTAssertEqual(presenter.sectionKeys.count, 2)
+        XCTAssertEqual(presenter.sectionedForecast.count, 2)
+        XCTAssertEqual(presenter.numberOfSections(), 2)
     }
     
-    func testPresenterSectionedForecastCorrectNumberOfItems() {
+    func testPresenterSectionedForecastCorrectNumberOfRows() {
         presenter.fetchData()
 
-        XCTAssertEqual(presenter.numberOfSections(), 2)
+        XCTAssertEqual(presenter.numberOfRows(in: 0), 1)
+        XCTAssertEqual(presenter.numberOfRows(in: 1), 2)
+    }
+    
+    func testPresenterSectionedForecastCorrectNumberOfRowsIfReload() {
+        presenter.fetchData()
+        presenter.fetchData()
+        
         XCTAssertEqual(presenter.numberOfRows(in: 0), 1)
         XCTAssertEqual(presenter.numberOfRows(in: 1), 2)
     }
@@ -75,8 +80,8 @@ final class ZPAirPollutionTests: XCTestCase {
     func testPresenterCorrectHeaderFromSectionKeys() {
         presenter.fetchData()
     
-        XCTAssertEqual(presenter.titleForHeader(in: 0), presenter.sectionKeys[0])
-        XCTAssertEqual(presenter.titleForHeader(in: 1), presenter.sectionKeys[1])
+        XCTAssertEqual(presenter.titleForHeader(in: 0), presenter.sectionedForecast[0].0)
+        XCTAssertEqual(presenter.titleForHeader(in: 1), presenter.sectionedForecast[1].0)
     }
     
     func testPresenterStructuresDataPassedForCurrent() {
@@ -92,7 +97,7 @@ final class ZPAirPollutionTests: XCTestCase {
     func testPresenterStructuresDataPassedForIndexPath() {
         presenter.fetchData()
         let indexPath = IndexPath(row: 0, section: 1)
-        let mockForecastElement = ("aqi2", "09 AM", UIColor.yellow)
+        let mockForecastElement = ("aqi2", "11 AM", UIColor.yellow)
         
         XCTAssertEqual(presenter.getForecastElement(for: indexPath).0, mockForecastElement.0)
         XCTAssertEqual(presenter.getForecastElement(for: indexPath).1, mockForecastElement.1)
@@ -103,8 +108,8 @@ final class ZPAirPollutionTests: XCTestCase {
         presenter.fetchData()
         let indexPath = IndexPath(row: 0, section: 1)
         let indexPathNext = IndexPath(row: 1, section: 1)
-        let mockForecastElement = ("", "09 AM", UIColor.yellow)
-        let mockForecastElementNext = ("", "10 AM", UIColor.yellow)
+        let mockForecastElement = ("", "11 AM", UIColor.yellow)
+        let mockForecastElementNext = ("", "12 PM", UIColor.yellow)
         
         XCTAssertEqual(presenter.getForecastElement(for: indexPath).1, mockForecastElement.1)
         XCTAssertEqual(presenter.getForecastElement(for: indexPathNext).1, mockForecastElementNext.1)

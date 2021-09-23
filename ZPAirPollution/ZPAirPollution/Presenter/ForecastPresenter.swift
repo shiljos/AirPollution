@@ -22,13 +22,11 @@ final class ForecastPresenter : ForecastPresenterProtocol {
     
     private let apiService: WeatherApiServiceProtocol
     private(set) weak var delegate: ForecastPresenterDelegate?
-    //private var sectionedForecast: [(key: String, value: [ForecastItemModel])] = [] {//! = nil {
-    private(set) var sectionedForecast: [[ForecastItemModel]]! = nil {
+    private(set) var sectionedForecast: [(key: String, value: [ForecastItemModel])] = [] {
         didSet {
             delegate?.updateUI()
         }
     }
-    private(set) var sectionKeys: [String]! = nil
     private(set) var currentForecast: ForecastItemModel! = nil {
         didSet {
             delegate?.updateCurrentView(with: getForecastElement())
@@ -44,18 +42,15 @@ final class ForecastPresenter : ForecastPresenterProtocol {
     }
     
     func numberOfSections() -> Int {
-        //sectionedForecast.count
-        sectionKeys.count
+        sectionedForecast.count
     }
     
     func numberOfRows(in section: Int) -> Int {
-        sectionedForecast[section].count
-        //sectionedForecast[section].value.count
+        sectionedForecast[section].1.count
     }
     
     func titleForHeader(in section: Int) -> String {
-        sectionKeys[section]
-        //sectionedForecast[section].key
+        sectionedForecast[section].0
     }
     
     func getForecastElement() -> ForecastElement {
@@ -65,14 +60,14 @@ final class ForecastPresenter : ForecastPresenterProtocol {
     }
     
     func getForecastElement(for indexPath: IndexPath) -> ForecastElement {
-        let forecastItem = sectionedForecast[indexPath.section][indexPath.row]
+        let forecastItem = sectionedForecast[indexPath.section].1[indexPath.row]
         return (String(describing: forecastItem.airQualityIndex),
                 forecastItem.hourComponent,
                 forecastItem.airQualityIndex.asColor)
     }
     
     func showForecastDetail(for indexPath: IndexPath) {
-        let forecastDetail = sectionedForecast[indexPath.section][indexPath.row].detail
+        let forecastDetail = sectionedForecast[indexPath.section].1[indexPath.row].detail
         delegate?.displayDetailView(with: forecastDetail.components())
     }
     
@@ -84,8 +79,6 @@ final class ForecastPresenter : ForecastPresenterProtocol {
 
 extension ForecastPresenter {
     func fetchData() {
-        sectionKeys = []
-        sectionedForecast = []
         getAirPollutionListItems()
         getCurrentAirPollutionItem()
     }
@@ -102,30 +95,30 @@ extension ForecastPresenter {
     }
     
    private func getAirPollutionListItems() {
-        getAirPollutionItems { [unowned self] forecastResponse in
-            sectionedForecast = Dictionary(grouping: forecastResponse.items, by: { $0.formattedDate })
-                                          .sorted(by: { compareAsc($0.key, $1.key) })
-                                          .map{ sectionKeys.append(($0.key)); return $0.value }
+        getAirPollutionItems { forecastResponse in
+            self.sectionedForecast = Dictionary(grouping: forecastResponse.items, by: { $0.formattedDate })
+                                                .sorted(by: { self.compareAsc($0.key, $1.key) })
+                                                .map{ $0 }
         }
     }
     
     private func getCurrentAirPollutionItem() {
-        getAirPollutionItems(CurrentForecastEndpoint(), { [unowned self] (forecastReponse) in
-            currentForecast = forecastReponse.first
+        getAirPollutionItems(CurrentForecastEndpoint(), { (forecastReponse) in
+            self.currentForecast = forecastReponse.first
         })
     }
     
-    private func compareAsc(_ v1: String, _ v2: String) -> Bool {
+    private func compareAsc(_ dateString1: String, _ dateString2: String) -> Bool {
         let formatter = DateFormatter()
-        return formatter.shortDate(from: v1) < formatter.shortDate(from: v2)
+        return formatter.shortDate(from: dateString1) < formatter.shortDate(from: dateString2)
     }
     
-    func handleError(_ error: Error) {
+    private func handleError(_ error: Error) {
         switch error {
             case URLError.cannotLoadFromNetwork, URLError.networkConnectionLost, URLError.notConnectedToInternet:
                 showOfflineView()
-            case ServiceError.unexpectedResponse://let error as ServiceError where error == .unexpectedResponse:
-                showUnexpectedDataAlertView()
+            case ServiceError.unexpectedResponse:
+                showUnexpectedEmptyDataAlertView()
             case is URLError:
                 showNetworkErrorView()
             default:
@@ -137,5 +130,5 @@ extension ForecastPresenter {
     
     func showNetworkErrorView() {}
     
-    func showUnexpectedDataAlertView() {}
+    func showUnexpectedEmptyDataAlertView() {}
 }

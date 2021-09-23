@@ -8,24 +8,26 @@
 import Foundation
 
 extension DateFormatter {
-    
-    func setFormat() {
-        dateStyle = .short
-        timeZone = TimeZone(identifier: "UTC")
-    }
 
     func shortDate(from value: String) -> Date! {
-        setFormat()
+        dateStyle = .short
         return date(from: value)
     }
     
     func shortDate(from value: Date) -> String {
-        setFormat()
+        dateStyle = .short
         return string(from: value)
     }
     
+    func fromUnixDate(_ value: TimeInterval) -> Date! {
+        let dateTime = Date(timeIntervalSince1970: value)
+        dateStyle = .full
+        timeStyle = .full
+        let dateString = string(from: dateTime)
+        return date(from: dateString)
+    }
+    
     func formattedHour(from date: Date) -> String {
-        timeZone = TimeZone(identifier: "UTC")
         dateFormat = "hh a"
         return string(from: date)
     }

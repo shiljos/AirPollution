@@ -22,12 +22,12 @@ struct Forecast : ForecastModel{
 }
 
 extension Forecast : Decodable {
-    enum CodingKeys : String, CodingKey {
-        case items = "list"
+    enum CodingKeys : CodingKey {
+        case list
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        items = try container.decode([ForecastItem].self, forKey: .items)
+        items = try container.decode([ForecastItem].self, forKey: .list)
     }
 }
